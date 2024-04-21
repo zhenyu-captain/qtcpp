@@ -1,16 +1,9 @@
 import Felgo
 import QtQuick
+import qtcpp 1.0
 
 App {
-    // You get free licenseKeys from https://felgo.com/licenseKey
-    // With a licenseKey you can:
-    //  * Publish your games & apps for the app stores
-    //  * Remove the Felgo Splash Screen or set a custom one (available with the Pro Licenses)
-    //  * Add plugins to monetize, analyze & improve your apps (available with the Pro Licenses)
-    //licenseKey: "<generate one from https://felgo.com/licenseKey>"
-
     NavigationStack {
-
         AppPage {
             title: qsTr("Main Page")
 
@@ -18,7 +11,23 @@ App {
                 source: "../assets/felgo-logo.png"
                 anchors.centerIn: parent
             }
-        }
 
+
+            TaskRunner {
+                id: taskRunner
+                onTaskCompleted: function(result) {  // 使用函数并显式声明参数
+                    myButton.text = result; // 更新按钮文本
+                }
+            }
+
+            AppButton {
+                id: myButton
+                text: qsTr("Click Me")
+                anchors.centerIn: parent
+                onClicked: {
+                    taskRunner.runTaskFlow(); // Run task when button is clicked
+                }
+            }
+        }
     }
 }

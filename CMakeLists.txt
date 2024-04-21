@@ -4,8 +4,13 @@ project(qtcpp VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# 设置 Taskflow 的查找路径
+set(TASKFLOW_PREFIX_PATH "/home/mi/vcpkg/installed/x64-linux/share/taskflow")
+
 
 find_package(Felgo REQUIRED)
+# 查找 Taskflow
+find_package(Taskflow CONFIG REQUIRED PATHS ${TASKFLOW_PREFIX_PATH})
 
 # Project identifier and version
 # More information: https://felgo.com/doc/felgo-publishing/#project-configuration
@@ -19,7 +24,7 @@ set(PRODUCT_STAGE "test")
 # Optionally set a license key that is used instead of the license key from
 # main.qml file (App::licenseKey for your app or GameWindow::licenseKey for your game)
 # Only used for local builds and Felgo Cloud Builds (https://felgo.com/cloud-builds)
-# Not used if using Felgo Live
+# Not used if using Felgo Liveq
 set(PRODUCT_LICENSE_KEY "")
 
 set(FELGO_PLUGINS
@@ -32,8 +37,22 @@ file(GLOB_RECURSE QmlFiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} qml/*.qml qml/*.
 file(GLOB_RECURSE AssetsFiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} assets/* qml/*)
 list(REMOVE_ITEM AssetsFiles ${QmlFiles})
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) #[zhenyu, 目录结构] 设置包含目录，以便编译器可以找到头文件
+
+set(SOURCE_FILES
+    main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/hello.cpp
+) #[zhenyu, 目录结构] 定义源文件
+
+set(HEADER_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/hello.h
+) #[zhenyu, 目录结构] 定义头文件
+
+
 qt_add_executable(appqtcpp
     main.cpp
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
     ${QmlFiles}
     ${AssetsFiles}
 )
@@ -70,5 +89,6 @@ target_link_libraries(appqtcpp PRIVATE Felgo)
 
 # uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
 # for the remaining steps to build a custom Live Code Reload app see here: https://felgo.com/custom-code-reload-app/
-#find_package(FelgoLive REQUIRED)
-#target_link_libraries(appqtcpp PRIVATE FelgoLive)
+find_package(FelgoLive REQUIRED)
+target_link_libraries(appqtcpp PRIVATE FelgoLive)
+target_link_libraries(appqtcpp PRIVATE Taskflow::Taskflow)
