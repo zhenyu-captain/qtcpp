@@ -42,10 +42,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) #[zhenyu, 目录结构]
 set(SOURCE_FILES
     main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hello.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/resource.cpp
 ) #[zhenyu, 目录结构] 定义源文件
 
 set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/hello.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/resource.h
 ) #[zhenyu, 目录结构] 定义头文件
 
 

@@ -14,3 +14,7 @@
 3. hello.h、hello.cpp、main.cpp、main.qml config
 4. go
 5. shutdown felgo desktop client auto start、stay on top、hot reload, off live client stay on top、hot reload
+
+# C++ version
+1. not support cpp20, Even with gcc13
+

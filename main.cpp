@@ -7,6 +7,9 @@
 //#include <FelgoLiveClient>
 #include "hello.h"
 #include <FelgoLiveClient>
+#include "resource.h"
+#include <iostream>
+
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +21,23 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     qmlRegisterType<Hello>("qtcpp", 1, 0, "TaskRunner");
     felgo.initialize(&engine);
+
+    //快速测试C++后端代码用，考虑到向QML添加较为麻烦，临时放在这里。
+    Resource res(42, "Hello, world!");
+    int intValue = res.doSomethingInt();
+    std::string& strValue = res.getStringValue();
+    std::cout << "[Yami] Integer value: " << intValue << std::endl;
+    std::cout << "[Yami] String value: " << strValue << std::endl;
+
+    //快速测试C++后端代码用，考虑到向QML添加较为麻烦，临时放在这里。
+    auto testNumber1 = std::make_unique<int>(100);
+    auto testNumber2 = std::make_unique<int>(100);
+    auto testNumber3 = *testNumber1 + *testNumber2;
+    std::cout << "[Yami] testNumber value: " << testNumber3 << std::endl;
+
+    auto testStr = std::make_unique<std::string>("Hello, 100!");
+    std::cout << "[Yami] testStr value: " << *testStr << std::endl;
+
 
     // Set an optional license key from project file
     // This does not work if using Felgo Live, only for Felgo Cloud Builds and local builds
